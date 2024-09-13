@@ -1,5 +1,7 @@
-import 'dotenv/config';
+import { loadEnv } from '@/utils/loadEnv';
 import { defineConfig } from 'drizzle-kit';
+
+loadEnv();
 
 export default defineConfig({
   schema: './src/server/database/schema.ts',
@@ -7,5 +9,9 @@ export default defineConfig({
   dialect: 'postgresql',
   dbCredentials: {
     url: process.env.DATABASE_URL,
+  },
+  migrations: {
+    schema: 'public',
+    table: 'migrations',
   },
 });

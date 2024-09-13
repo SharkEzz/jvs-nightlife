@@ -25,6 +25,7 @@
     }
   },
   "javascript": {
+    "jsxRuntime": "transparent",
     "formatter": {
       "quoteStyle": "single",
       "arrowParentheses": "always",
