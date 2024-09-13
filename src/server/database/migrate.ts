@@ -1,5 +1,5 @@
-import { migrate } from 'drizzle-orm/node-postgres/migrator';
+import { migrate } from 'drizzle-orm/better-sqlite3/migrator';
 import { db, client } from './db';
 
-await migrate(db, { migrationsFolder: './drizzle' });
-await client.end();
+migrate(db, { migrationsFolder: './drizzle' });
+client.close();

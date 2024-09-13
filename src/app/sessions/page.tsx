@@ -1,3 +1,5 @@
+import { PageLayout } from '@/components/PageLayout';
+
 export default function Sessions() {
-  return <div>sessions</div>;
+  return <PageLayout title="Sessions">toto</PageLayout>;
 }

@@ -1,13 +1,6 @@
-import { loadEnv } from '@/utils/loadEnv';
-import pg from 'pg';
-import { drizzle } from 'drizzle-orm/node-postgres';
+import { drizzle } from 'drizzle-orm/better-sqlite3';
 import * as schema from './schema';
+import Database from 'better-sqlite3';
 
-loadEnv();
-
-export const client = new pg.Client({
-  connectionString: process.env.DATABASE_URL,
-});
-
-await client.connect();
+export const client = Database('sqlite.db');
 export const db = drizzle(client, { schema });

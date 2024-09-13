@@ -1,39 +1,40 @@
-import { integer, pgEnum, pgTable, serial, timestamp, varchar } from 'drizzle-orm/pg-core';
+import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
-export const user = pgTable('user', {
-  id: serial('id').primaryKey(),
-  firstName: varchar('first_name').notNull(),
-  lastName: varchar('last_name').notNull(),
-  playerName: varchar('player_name').notNull(),
-  profileUrl: varchar('profile_url'),
+export const user = sqliteTable('user', {
+  id: integer('id').primaryKey(),
+  firstName: text('first_name').notNull(),
+  lastName: text('last_name').notNull(),
+  playerName: text('player_name').notNull(),
+  profileUrl: text('profile_url'),
+  estJVS: integer('est_jvs', { mode: 'boolean' }).notNull(),
+});
+export type SelectUser = typeof user.$inferSelect;
+export type NewUser = typeof user.$inferInsert;
+
+export const map = sqliteTable('map', {
+  id: integer('id').primaryKey(),
+  name: text('name').notNull().unique(),
 });
 
-export const map = pgTable('map', {
-  id: serial('id').primaryKey(),
-  name: varchar('name').notNull().unique(),
+export const session = sqliteTable('session', {
+  id: integer('id').primaryKey(),
+  date: integer('date', { mode: 'timestamp_ms' }).notNull(),
 });
 
-export const session = pgTable('session', {
-  id: serial('id').primaryKey(),
-  date: timestamp('date').notNull(),
-});
-
-export const sessionTeamNumberEnum = pgEnum('session_team_number', ['blue', 'red']);
-export const sessionTeamUser = pgTable('session_team_user', {
-  id: serial('id').primaryKey(),
+export const sessionTeamUser = sqliteTable('session_team_user', {
+  id: integer('id').primaryKey(),
   userId: integer('user_id')
     .notNull()
     .references(() => user.id),
   sessionId: integer('session_id')
     .notNull()
     .references(() => session.id),
-  team: sessionTeamNumberEnum('team').notNull(),
+  team: text('team', { enum: ['blue', 'red'] }).notNull(),
 });
 
-export const gameModeEnum = pgEnum('game_mode', ['domination', 'team_deathmatch']); // TODO: verify
-export const game = pgTable('game', {
-  id: serial('id').primaryKey(),
-  mode: gameModeEnum('mode').notNull(),
+export const game = sqliteTable('game', {
+  id: integer('id').primaryKey(),
+  mode: text('mode', { enum: ['domination', 'team_deathmatch'] }).notNull(), // TODO: verify modes
   mapId: integer('map_id')
     .notNull()
     .references(() => map.id),
@@ -42,8 +43,8 @@ export const game = pgTable('game', {
     .references(() => session.id),
 });
 
-export const userGameResult = pgTable('user_game_result', {
-  id: serial('id').primaryKey(),
+export const userGameResult = sqliteTable('user_game_result', {
+  id: integer('id').primaryKey(),
   gameId: integer('game_id')
     .notNull()
     .references(() => game.id),

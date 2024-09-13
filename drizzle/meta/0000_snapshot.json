@@ -1,37 +1,39 @@
 {
-  "id": "25780dff-403e-4854-9d4d-44c7f7689f92",
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "e03396eb-2cf9-4716-89a4-57de7008d22b",
   "prevId": "00000000-0000-0000-0000-000000000000",
-  "version": "7",
-  "dialect": "postgresql",
   "tables": {
-    "public.game": {
+    "game": {
       "name": "game",
-      "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "mode": {
           "name": "mode",
-          "type": "game_mode",
-          "typeSchema": "public",
+          "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "map_id": {
           "name": "map_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "session_id": {
           "name": "session_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {},
@@ -66,51 +68,53 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.map": {
+    "map": {
       "name": "map",
-      "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "name": {
           "name": "name",
-          "type": "varchar",
+          "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         }
       },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
+      "indexes": {
         "map_name_unique": {
           "name": "map_name_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "name"
-          ]
+          ],
+          "isUnique": true
         }
-      }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     },
-    "public.session": {
+    "session": {
       "name": "session",
-      "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "date": {
           "name": "date",
-          "type": "timestamp",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {},
@@ -118,34 +122,36 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.session_team_user": {
+    "session_team_user": {
       "name": "session_team_user",
-      "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "user_id": {
           "name": "user_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "session_id": {
           "name": "session_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "team": {
           "name": "team",
-          "type": "session_team_number",
-          "typeSchema": "public",
+          "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {},
@@ -180,39 +186,50 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.user": {
+    "user": {
       "name": "user",
-      "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "first_name": {
           "name": "first_name",
-          "type": "varchar",
+          "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "last_name": {
           "name": "last_name",
-          "type": "varchar",
+          "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "player_name": {
           "name": "player_name",
-          "type": "varchar",
+          "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "profile_url": {
           "name": "profile_url",
-          "type": "varchar",
+          "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "autoincrement": false
+        },
+        "est_jvs": {
+          "name": "est_jvs",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {},
@@ -220,51 +237,57 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.user_game_result": {
+    "user_game_result": {
       "name": "user_game_result",
-      "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "game_id": {
           "name": "game_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "user_id": {
           "name": "user_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "kill": {
           "name": "kill",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "death": {
           "name": "death",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "assist": {
           "name": "assist",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "score": {
           "name": "score",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {},
@@ -300,29 +323,13 @@
       "uniqueConstraints": {}
     }
   },
-  "enums": {
-    "public.game_mode": {
-      "name": "game_mode",
-      "schema": "public",
-      "values": [
-        "domination",
-        "team_deathmatch"
-      ]
-    },
-    "public.session_team_number": {
-      "name": "session_team_number",
-      "schema": "public",
-      "values": [
-        "blue",
-        "red"
-      ]
-    }
-  },
-  "schemas": {},
-  "sequences": {},
+  "enums": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "indexes": {}
   }
 }
