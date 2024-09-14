@@ -8,7 +8,7 @@ export function PageLayout({
 }: PropsWithChildren<{ title: string; extra?: ReactNode }>) {
   return (
     <div className="flex flex-col gap-4 py-4">
-      <div className="flex justify-between">
+      <div className="flex items-center justify-between">
         <Title>{title}</Title>
         {extra}
       </div>

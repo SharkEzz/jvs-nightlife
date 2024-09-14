@@ -1,34 +1,42 @@
-'use client';
-
 import { FormControl } from '@/components/FormControl';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useFormState } from 'react-dom';
-import { createUser } from './createUser';
-
-const initialState = {
-  estJVS: false,
-  firstName: '',
-  lastName: '',
-  playerName: '',
-};
+import { FormSubmitButton } from '@/components/FormSubmitButton';
+import type { NewUser } from '@/server/database/schema';
+import { db } from '@/server/database/db';
+import * as schema from '@/server/database/schema';
+import { revalidatePath } from 'next/cache';
 
 export function UserModal() {
-  const [state, formAction] = useFormState(createUser, initialState);
+  const createUser = async (formData: FormData) => {
+    'use server';
 
-  console.log(state);
+    const data = Object.fromEntries(formData) as unknown as NewUser; // TODO
+    const result = await db
+      .insert(schema.user)
+      .values({
+        ...data,
+        estJVS: data.estJVS ?? false,
+      })
+      .returning();
+
+    revalidatePath('/joueurs');
+    return result[0];
+  };
 
   return (
     <Dialog>
-      <DialogTrigger>Open</DialogTrigger>
+      <DialogTrigger asChild>
+        <Button variant="secondary">Nouveau joueur</Button>
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Créer un nouveau joueur</DialogTitle>
         </DialogHeader>
-        <form action={formAction} className="space-y-4">
+        <form action={createUser} className="space-y-4">
           <div className="flex gap-4">
             <FormControl>
               <Label htmlFor="firstName">Prénom*</Label>
@@ -52,7 +60,7 @@ export function UserModal() {
             <Label htmlFor="estJVS">Employé de JVS ?</Label>
           </FormControl>
           <DialogFooter>
-            <Button type="submit">Valider</Button>
+            <FormSubmitButton />
           </DialogFooter>
         </form>
       </DialogContent>

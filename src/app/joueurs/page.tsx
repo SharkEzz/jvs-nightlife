@@ -1,6 +1,5 @@
 import { UserModal } from '@/components/Modals/UserModal';
 import { PageLayout } from '@/components/PageLayout';
-import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { db } from '@/server/database/db';
 import Link from 'next/link';
@@ -9,8 +8,7 @@ export default async function Joueurs() {
   const users = await db.query.user.findMany();
 
   return (
-    <PageLayout title="Joueurs" extra={<Button variant="secondary">Nouveau joueur</Button>}>
-      <UserModal />
+    <PageLayout title="Joueurs" extra={<UserModal />}>
       <Table>
         <TableHeader>
           <TableRow>

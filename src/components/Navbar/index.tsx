@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Button } from '../ui/button';
+import { SessionModal } from '../Modals/SessionModal';
 
 const LINKS = [
   {
@@ -31,7 +31,7 @@ export function Navbar() {
               </li>
             ))}
           </ul>
-          <Button className="ml-auto">Nouvelle session</Button>
+          <SessionModal className="ml-auto" />
         </div>
       </div>
     </nav>
