@@ -1,30 +1,38 @@
 import { FormControl } from '@/components/FormControl';
+import { FormSubmitButton } from '@/components/FormSubmitButton';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { FormSubmitButton } from '@/components/FormSubmitButton';
-import type { NewUser } from '@/server/database/schema';
 import { db } from '@/server/database/db';
 import * as schema from '@/server/database/schema';
 import { revalidatePath } from 'next/cache';
+import { z } from 'zod';
+
+const createUserSchema = z.object({
+  firstName: z.string().min(1, 'Le prénom est requis'),
+  lastName: z.string().min(1, 'Le nom est requis'),
+  playerName: z.string().min(1, 'Le pseudo est requis'),
+  profileUrl: z.preprocess(
+    (val) => (val === '' ? undefined : val),
+    z.string().url("L'URL du profil est invalide").optional(),
+  ),
+  estJVS: z.preprocess((val) => val === 'on', z.boolean()),
+});
 
 export function UserModal() {
   const createUser = async (formData: FormData) => {
     'use server';
 
-    const data = Object.fromEntries(formData) as unknown as NewUser; // TODO
-    const result = await db
-      .insert(schema.user)
-      .values({
-        ...data,
-        estJVS: data.estJVS ?? false,
-      })
-      .returning();
+    const parsed = createUserSchema.safeParse(Object.fromEntries(formData));
+    if (!parsed.success) {
+      throw new Error('Données invalides');
+    }
+
+    const result = await db.insert(schema.user).values(parsed.data).returning();
 
     revalidatePath('/joueurs');
-    return result[0];
   };
 
   return (
