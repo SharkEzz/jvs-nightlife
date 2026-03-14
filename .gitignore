@@ -38,3 +38,4 @@ yarn-error.log*
 next-env.d.ts
 
 sqlite.db
+# package-lock.json - project uses pnpm
